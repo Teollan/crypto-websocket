@@ -120,7 +120,8 @@ function App() {
         <TotalContainer>
           <Typography variant="h3">
             Total: <br />
-            {total.toFixed(DECIMALS)}
+            {total.toFixed(DECIMALS)} <br />
+            BTC
           </Typography>
 
           <ControlsContainer>
@@ -131,8 +132,8 @@ function App() {
         </TotalContainer>
 
         <LogsContainer sx={{ flexGrow: 1 }} ref={logsElement}>
-          {logs.map((entry, index) => (
-            <Typography sx={{ whiteSpace: "nowrap" }} key={index}>
+          {logs.map((entry) => (
+            <Typography sx={{ whiteSpace: "nowrap" }} key={entry}>
               {entry}
             </Typography>
           ))}
