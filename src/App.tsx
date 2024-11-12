@@ -1,6 +1,9 @@
-import { Box, Button, styled, Typography } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import toBtc from "./util/toBtc";
+import Controls from "./components/Controls";
+import Total from "./components/Total";
+import Logs from "./components/Logs";
 
 const OuterContainer = styled(Box)({
   padding: "30px",
@@ -17,17 +20,6 @@ const InnerContainer = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   gap: "50px",
-});
-
-const ControlsContainer = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  gap: "15px",
-});
-
-const LogsContainer = styled(Box)({
-  maxHeight: "500px",
-  overflowY: "auto",
 });
 
 const WS_URL = "wss://ws.blockchain.info/inv";
@@ -109,7 +101,7 @@ function App() {
     pushLog("Paused receiving.");
   };
 
-  const clearLog = () => {
+  const clearLogs = () => {
     setLogs([]);
     setTotal(0);
   };
@@ -118,26 +110,16 @@ function App() {
     <OuterContainer>
       <InnerContainer>
         <TotalContainer>
-          <Typography variant="h3">
-            Total: <br />
-            {total.toFixed(DECIMALS)} <br />
-            BTC
-          </Typography>
+          <Total total={total} afterComa={DECIMALS} />
 
-          <ControlsContainer>
-            <Button onClick={startRecieving}>Start</Button>
-            <Button onClick={pauseRecieving}>Stop</Button>
-            <Button onClick={clearLog}>Reset</Button>
-          </ControlsContainer>
+          <Controls
+            onStart={startRecieving}
+            onStop={pauseRecieving}
+            onReset={clearLogs}
+          />
         </TotalContainer>
 
-        <LogsContainer sx={{ flexGrow: 1 }} ref={logsElement}>
-          {logs.map((entry) => (
-            <Typography sx={{ whiteSpace: "nowrap" }} key={entry}>
-              {entry}
-            </Typography>
-          ))}
-        </LogsContainer>
+        <Logs entries={logs} ref={logsElement} />
       </InnerContainer>
     </OuterContainer>
   );
