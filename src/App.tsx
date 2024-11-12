@@ -41,7 +41,7 @@ function App() {
   const socket = useRef<WebSocket>(null!);
   const logsElement = useRef<HTMLDivElement>(null);
 
-  const sendToSocket = (msg: any) => {
+  const sendToSocket = (msg: { [key: string]: string }) => {
     if (socket.current && socket.current.readyState === WebSocket.OPEN) {
       socket.current.send(JSON.stringify(msg));
     }
@@ -52,11 +52,9 @@ function App() {
       const newSocket = new WebSocket(WS_URL);
 
       newSocket.onopen = () => {
-        sendToSocket(
-          sendToSocket({
-            op: "unconfirmed_sub",
-          })
-        );
+        sendToSocket({
+          op: "unconfirmed_sub",
+        });
       };
 
       newSocket.onclose = () => {
